@@ -30,11 +30,12 @@ COPY requirements.txt .
 # Install Python dependencies
 # Install PyTorch/Torchaudio first
 RUN pip3 install --no-cache-dir torch torchaudio --index-url https://download.pytorch.org/whl/cu118
-# Download the vllm wheel first, then install locally
-RUN wget https://github.com/vllm-project/vllm/releases/download/v0.7.3/vllm-0.7.3+cu118-cp310-cp310-manylinux1_x86_64.whl -O /tmp/vllm.whl
+# Download the vllm v0.6.3.post1 wheel first, then install locally
+RUN wget https://github.com/vllm-project/vllm/releases/download/v0.6.3.post1/vllm-0.6.3.post1+cu118-cp310-cp310-manylinux1_x86_64.whl -O /tmp/vllm.whl
 RUN pip3 install --no-cache-dir /tmp/vllm.whl -vvv
 RUN rm /tmp/vllm.whl
-# Install packages from requirements.txt (should just be runpod now)
+# Install packages from requirements.txt (runpod, orpheus-tts)
+# NOTE: orpheus-tts might pull a newer vllm dependency, but pip should use the already installed v0.6.3.post1
 RUN pip3 install --no-cache-dir -r requirements.txt -vvv
 
 # Copy the rest of the application code
