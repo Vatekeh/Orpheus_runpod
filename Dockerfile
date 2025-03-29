@@ -26,9 +26,10 @@ COPY requirements.txt .
 # Install Python dependencies
 # Install PyTorch/Torchaudio first
 RUN pip3 install --no-cache-dir torch torchaudio --index-url https://download.pytorch.org/whl/cu118
-# Install specific vllm version recommended by Orpheus docs
-RUN pip3 install --no-cache-dir vllm==0.7.3 
+# Install specific vllm wheel for CUDA 11.8 / Python 3.10
+RUN pip3 install --no-cache-dir https://github.com/vllm-project/vllm/releases/download/v0.7.3/vllm-0.7.3+cu118-cp310-cp310-manylinux1_x86_64.whl
 # Install packages from requirements.txt with high verbosity
+# (This will install runpod and orpheus-tts, vllm is already installed)
 RUN pip3 install --no-cache-dir -r requirements.txt -vvv
 
 # Copy the rest of the application code
